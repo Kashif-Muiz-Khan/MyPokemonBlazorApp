@@ -20,7 +20,7 @@
             <h4 class="card-title">
                 @(model.Id == 0 ? "Add Trainer" : "Edit Trainer")
             </h4>
-            <EditForm OnValidSubmit="Submit" EditContext="editContext">
+            <EditForm OnValidSubmit="TrainerSubmit" EditContext="editContext">
                 <DataAnnotationsValidator />
                 <div class="row g-3">
                     <div class="col-md-3">
@@ -31,7 +31,7 @@
 
                     <div class="col-md-6">
                         <label for="type" class="form-label">Companion</label>
-                        <InputSelect class="form-select" placeholder="Companion" @bind-Value="model.Companion">
+                        <InputSelect class="form-select" placeholder="Companion" @bind-Value="companionId">
                             @foreach (var pokemon in pokemons)
                             {
                                 <option value="@pokemon.Id">@pokemon.Name</option>
@@ -113,14 +113,14 @@
         showForm = true;
     }
 
-    private async Task Submit()
+    private async Task TrainerSubmit()
     {
-        model.Companion = pokemons.Single(p => p.Id == companionId);
+        Model.Companion = pokemons.Single(p => p.Id == companionId);
 
-        if (model.Id == 0)
-            DbContext.Trainers.Add(model);
+        if (Model.Id == 0)
+            DbContext.Trainers.Add(Model);
         else
-            DbContext.Trainers.Update(model);
+            DbContext.Trainers.Update(Model);
 
         await DbContext.SaveChangesAsync();
         await OnSaved.InvokeAsync();
