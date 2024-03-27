@@ -1,0 +1,198 @@
+﻿@page "/Info/{id:int}"
+@inject DatabaseContext DbContext
+
+<h3>Info</h3>
+@if (pokemon is not null)
+{
+    <p> @pokemon?.Name </p>
+}
+else
+{
+    <p>No pokemon found for Id @Id</p>
+}
+
+<div class="card">
+    <div class="card-body bg-light">
+
+        <p>@pokemon.Name</p>
+        @if (pokemon.Legendary == true)
+        {
+            <span class="badge text-bg-warning">Legendary</span>
+        }
+
+
+        @switch (pokemon.Type)
+        {
+            case "Grass":
+                {
+                    <span class="badge text-bg-success">Grass</span>
+                    <span class="badge text-bg-info">Gen @pokemon.Generation</span>
+                    break;
+                }
+            case "Fire":
+                {
+                    <span class="badge text-bg-warning">Fire</span>
+                    <span class="badge text-bg-info">Gen @pokemon.Generation</span>
+                    break;
+                }
+            case "Water":
+                {
+                    <span class="badge text-bg-info">Water</span>
+                    <span class="badge text-bg-info">Gen @pokemon.Generation</span>
+                    break;
+                }
+            case "Bug":
+                {
+                    <span class="badge text-bg-warning">Bug</span>
+                    <span class="badge text-bg-info">Gen @pokemon.Generation</span>
+                    break;
+                }
+            case "Normal":
+                {
+                    <span class="badge text-bg-warning">Normal</span>
+                    <span class="badge text-bg-info">Gen @pokemon.Generation</span>
+                    break;
+                }
+            case "Poison":
+                {
+                    <span class="badge text-bg-warning">Poison</span>
+                    <span class="badge text-bg-info">Gen @pokemon.Generation</span>
+                    break;
+                }
+            case "Electric":
+                {
+                    <span class="badge text-bg-warning">Electric</span>
+                    <span class="badge text-bg-info">Gen @pokemon.Generation</span>
+                    break;
+                }
+            case "Ground":
+                {
+                    <span class="badge text-bg-warning">Ground</span>
+                    <span class="badge text-bg-info">Gen @pokemon.Generation</span>
+                    break;
+                }
+            case "Fairy":
+                {
+                    <span class="badge text-bg-warning">Fairy</span>
+                    <span class="badge text-bg-info">Gen @pokemon.Generation</span>
+                    break;
+                }
+            case "Psychic":
+                {
+                    <span class="badge text-bg-warning">Psychic</span>
+                    <span class="badge text-bg-info">Gen @pokemon.Generation</span>
+                    break;
+                }
+            case "Rock":
+                {
+                    <span class="badge text-bg-warning">Rock</span>
+                    <span class="badge text-bg-info">Gen @pokemon.Generation</span>
+                    break;
+                }
+            case "Ghost":
+                {
+                    <span class="badge text-bg-warning">Ghost</span>
+                    <span class="badge text-bg-info">Gen @pokemon.Generation</span>
+                    break;
+                }
+            case "Fighting":
+                {
+                    <span class="badge text-bg-warning">Fighting</span>
+                    <span class="badge text-bg-info">Gen @pokemon.Generation</span>
+                    break;
+                }
+            case "Ice":
+                {
+                    <span class="badge text-bg-warning">Ice</span>
+                    <span class="badge text-bg-info">Gen @pokemon.Generation</span>
+                    break;
+                }
+            case "Dragon":
+                {
+                    <span class="badge text-bg-warning">Dragon</span>
+                    <span class="badge text-bg-info">Gen @pokemon.Generation</span>
+                    break;
+                }
+            case "Darl":
+                {
+                    <span class="badge text-bg-warning">Darl</span>
+                    <span class="badge text-bg-info">Gen @pokemon.Generation</span>
+                    break;
+                }
+            case "Steel":
+                {
+                    <span class="badge text-bg-warning">Steel</span>
+                    <span class="badge text-bg-info">Gen @pokemon.Generation</span>
+                    break;
+                }
+
+        }        
+    </div>
+</div>
+
+
+<div>
+    <div class="card">
+        <div class="card-body bg-light">
+            <p>Total : @pokemon.Total</p>
+            <div class="progress" role="progressbar" aria-label="Example" aria-valuenow="@pokemon.Total" aria-valuemin="0" aria-valuemax="800" style="height: 20px">
+                <div class="progress-bar" style="width: @(pokemon.Total*100/800)%">@(pokemon.Total * 100 / 800)%</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body bg-light">
+            <p>HP : @pokemon.HP</p>
+            <div class="progress" role="progressbar" aria-label="Example" aria-valuenow="@pokemon.HP" aria-valuemin="0" aria-valuemax="255" style="height: 20px">
+                <div class="progress-bar bg-info" style="width: @(pokemon.HP*100/255)%">@(pokemon.HP * 100 / 255)%</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body bg-light">
+            <p>Attack : @pokemon.Attack</p>
+            <div class="progress" role="progressbar" aria-label="Example" aria-valuenow="@pokemon.Attack" aria-valuemin="0" aria-valuemax="255" style="height: 20px">
+                <div class="progress-bar bg-danger" style="width: @(pokemon.Attack*100/255)%">@(pokemon.Attack * 100 / 255)%</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body bg-light">
+            <p>Defence : @pokemon.Defence</p>
+            <div class="progress" role="progressbar" aria-label="Example" aria-valuenow="@pokemon.Defence" aria-valuemin="0" aria-valuemax="255" style="height: 20px">
+                <div class="progress-bar bg-success" style="width: @(pokemon.Defence*100/255)%">@(pokemon.Defence * 100 / 255)%</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body bg-light">
+            <p>Speed : @pokemon.Speed</p>
+            <div class="progress" role="progressbar" aria-label="Example" aria-valuenow="@pokemon.Speed" aria-valuemin="0" aria-valuemax="255" style="height: 20px">
+                <div class="progress-bar bg-warning" style="width: @(pokemon.Speed*100/255)%">@(pokemon.Speed * 100 / 255)%</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+      
+
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Pokemon? pokemon;
+
+    protected override void OnInitialized()
+    {
+        pokemon = DbContext.Pokemons.SingleOrDefault(p => p.Id == Id);
+    }
+
+}
+
