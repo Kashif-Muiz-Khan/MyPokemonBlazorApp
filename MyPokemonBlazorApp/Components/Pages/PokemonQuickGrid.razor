@@ -1,0 +1,113 @@
+﻿@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Components.QuickGrid
+@inject DatabaseContext DbContext
+@inject NavigationManager NavigationManager
+
+
+
+
+<h3>PokemonQuickGrid</h3>
+
+
+@if (Pokemons == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div>
+        <QuickGrid Theme="pokemon" Class="table" Items="@FilteredPokemon" Pagination="@pagination">
+            <PropertyColumn Property="@(p => p.Id)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.Name)" Sortable="true">
+                <ColumnOptions>
+                    <div class="search-box">
+                        <input type="search" autofocus @bind="nameSearch" @bind:event="oninput" placeholder="Pokemon name..." />
+                    </div>
+                </ColumnOptions>
+            </PropertyColumn>
+            <PropertyColumn Property="@(p => p.Total)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.HP)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.Attack)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.Defence)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.Speed)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.Generation)" Sortable="true" />
+            <PropertyColumn Property="@(p => p.Legendary)" Sortable="true" />
+            <TemplateColumn Title="Edit">
+                <button class="btn btn-success" @onclick="() => Edit(context)">Edit</button>
+            </TemplateColumn>
+            <TemplateColumn Title="Delete">
+                <button class="btn btn-danger" @onclick="() => Delete(context)">Delete</button>
+            </TemplateColumn>
+            <TemplateColumn Title="Info">
+                <button class="btn btn-primary" @onclick="() => ShowInfo(context)">Info</button>
+            </TemplateColumn>
+        </QuickGrid>
+        <Paginator State="@pagination" />
+    </div>
+}
+
+@code {
+
+
+    private EditContext editContext;
+    private Pokemon model;
+
+
+
+    private Pokemon pokemon = new Pokemon();
+    private IQueryable<Pokemon>? pokemons;
+  
+
+
+
+
+    private PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
+    private string nameSearch;
+
+
+    public IQueryable<Pokemon>? Pokemons { get; set; }
+
+    private IQueryable<Pokemon>? FilteredPokemon
+    {
+        get
+        {
+            IQueryable<Pokemon>? filtered = Pokemons;
+            if (!string.IsNullOrEmpty(nameSearch))
+            {
+                filtered = filtered?.Where(c => c.Name.Contains(nameSearch, StringComparison.CurrentCultureIgnoreCase));
+            }
+            return filtered;
+
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetPokemon();
+    }
+    private async Task GetPokemon()
+    {
+        Pokemons = (await DbContext.Pokemons.ToListAsync()).AsQueryable();
+        model = new Pokemon();
+        editContext = new EditContext(model);
+    }
+
+    private void ShowInfo(Pokemon pokemon)
+    {
+        NavigationManager.NavigateTo($"/Info/{pokemon.Id}");
+    }
+
+    private void Edit(Pokemon pokemon)
+    {
+        model = pokemon;
+        editContext = new EditContext(model);
+
+    }
+
+
+    private async Task Delete(Pokemon pokemon)
+    {
+        DbContext.Pokemons.Remove(pokemon);
+        await DbContext.SaveChangesAsync();
+    }
+}

@@ -1,5 +1,8 @@
 ﻿@page "/Info/{id:int}"
+@using PokemonBlazorApp.Components.Shared
 @inject DatabaseContext DbContext
+@inject PokemonImageGrabber ImageGrabber
+@inject NavigationManager NavigationManager
 
 <h3>Info</h3>
 @if (pokemon is not null)
@@ -178,7 +181,62 @@ else
     </div>
 </div>
 
+<div class="card mb-3" style="max-width: 540px;">
+    <div class="row g-0">
+        <div class="col-md-4">
+            <img src="@imageUrl" class="img-fluid rounded-start" alt="...">
+        </div>
+        <div class="col-md-8">
+            <div>
+                <div class="card">
+                    <div class="card-body bg-light">
+                        <p>Total : @pokemon.Total</p>
+                        <div class="progress" role="progressbar" aria-label="Example" aria-valuenow="@pokemon.Total" aria-valuemin="0" aria-valuemax="800" style="height: 20px">
+                            <div class="progress-bar" style="width: @(pokemon.Total*100/800)%">@(pokemon.Total * 100 / 800)%</div>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="card">
+                    <div class="card-body bg-light">
+                        <p>HP : @pokemon.HP</p>
+                        <div class="progress" role="progressbar" aria-label="Example" aria-valuenow="@pokemon.HP" aria-valuemin="0" aria-valuemax="255" style="height: 20px">
+                            <div class="progress-bar bg-info" style="width: @(pokemon.HP*100/255)%">@(pokemon.HP * 100 / 255)%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body bg-light">
+                        <p>Attack : @pokemon.Attack</p>
+                        <div class="progress" role="progressbar" aria-label="Example" aria-valuenow="@pokemon.Attack" aria-valuemin="0" aria-valuemax="255" style="height: 20px">
+                            <div class="progress-bar bg-danger" style="width: @(pokemon.Attack*100/255)%">@(pokemon.Attack * 100 / 255)%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body bg-light">
+                        <p>Defence : @pokemon.Defence</p>
+                        <div class="progress" role="progressbar" aria-label="Example" aria-valuenow="@pokemon.Defence" aria-valuemin="0" aria-valuemax="255" style="height: 20px">
+                            <div class="progress-bar bg-success" style="width: @(pokemon.Defence*100/255)%">@(pokemon.Defence * 100 / 255)%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body bg-light">
+                        <p>Speed : @pokemon.Speed</p>
+                        <div class="progress" role="progressbar" aria-label="Example" aria-valuenow="@pokemon.Speed" aria-valuemin="0" aria-valuemax="255" style="height: 20px">
+                            <div class="progress-bar bg-warning" style="width: @(pokemon.Speed*100/255)%">@(pokemon.Speed * 100 / 255)%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 
       
 
@@ -188,10 +246,17 @@ else
     public int Id { get; set; }
 
     private Pokemon? pokemon;
+    private string? imageUrl { get; set; }
 
     protected override void OnInitialized()
     {
         pokemon = DbContext.Pokemons.SingleOrDefault(p => p.Id == Id);
+    }
+
+    protected override void OnParametersSet()
+    {
+        imageUrl = ImageGrabber.GetImageUrl(pokemon);
+        base.OnParametersSet();
     }
 
 }

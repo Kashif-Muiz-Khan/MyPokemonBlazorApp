@@ -1,5 +1,6 @@
 using MyPokemonBlazorApp.Components;
 using MyPokemonBlazorApp.Context;
+using PokemonBlazorApp.Components.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddDbContext<DatabaseContext>();
+builder.Services.AddScoped<PokemonImageGrabber>();
 
 var app = builder.Build();
 

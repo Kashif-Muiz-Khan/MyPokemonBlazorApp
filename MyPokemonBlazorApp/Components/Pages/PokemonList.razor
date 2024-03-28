@@ -3,6 +3,13 @@
 @inject NavigationManager NavigationManager
 
 
+
+
+
+
+
+
+
     <div class="row g-0">
         <div class="col-md-12">
             <button class="btn btn-primary float-end" @onclick="ShowAddPokemon">
@@ -77,51 +84,8 @@
 }
 
 
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Type</th>
-            <th scope="col">Total</th>
-            <th scope="col">HP</th>
-            <th scope="col">Attack</th>
-            <th scope="col">Defence</th>
-            <th scope="col">Speed</th>
-            <th scope="col">Generation</th>
-            <th scope="col">Legendary</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
-            <th scope="col">Info</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var pokemon in pokemons)
-        {
-            <tr>
-                <td>@pokemon.Id</td>
-                <td>@pokemon.Name</td>
-                <td>@pokemon.Type</td>
-                <td>@pokemon.Total</td>
-                <td>@pokemon.HP</td>
-                <td>@pokemon.Attack</td>
-                <td>@pokemon.Defence</td>
-                <td>@pokemon.Speed</td>
-                <td>@pokemon.Generation</td>
-                <td>@pokemon.Legendary</td>
-                <td>
-                    <button class="btn btn-success" @onclick="() => Edit(pokemon)">Edit</button>
-                </td>
-                <td>
-                    <button class="btn btn-danger" @onclick="() => Delete(pokemon)">Delete</button>
-                </td>
-                <td>
-                    <button class="btn btn-primary" @onclick="() => Info(pokemon)">Info</button>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+<PokemonQuickGrid />
 
 @code {
     private List<Pokemon>? pokemons;
