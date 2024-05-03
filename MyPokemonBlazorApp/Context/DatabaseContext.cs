@@ -6,16 +6,27 @@ namespace MyPokemonBlazorApp.Context
 {
     public class DatabaseContext :DbContext
     {
+        private IWebHostEnvironment _environment;
 
         public DbSet<Pokemon> Pokemons { get; set; }
         public DbSet<Trainer> Trainers { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+
+
+        public DatabaseContext(DbContextOptions<DatabaseContext> options, IWebHostEnvironment environment) : base(options)
         {
-            var folder = Environment.SpecialFolder.MyDocuments;
-            var path = Environment.GetFolderPath(folder);
-            var dbpath = Path.Join(path, "pokemony.db");
-            optionsBuilder.UseSqlite($"Data Source={dbpath}");
+            _environment = environment;
+        }
+
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionbuilder)
+        {
+            var folder = Path.Combine(_environment.WebRootPath, "database");
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
+            optionbuilder.UseSqlite($"Data Source={folder}/pokemon.db");
         }
         // This is my Database
 
